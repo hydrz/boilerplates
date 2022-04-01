@@ -12,12 +12,11 @@ services:
     environment:
       - USER_UID=1000
       - USER_GID=1000
-      - GITEA__database__DB_TYPE=mysql
-      - GITEA__database__HOST=db:3306
-      - GITEA__database__NAME=gitea
-      - GITEA__database__USER=root
-      - GITEA__database__PASSWD=root
-    restart: unless-stopped
+      - DB_TYPE=mysql
+      - DB_HOST=db:3306
+      - DB_NAME=gitea
+      - DB_USER=root
+    restart: always
     volumes:
       - ./gitea:/data
       - /etc/timezone:/etc/timezone:ro
@@ -25,7 +24,7 @@ services:
   db:
     image: mysql:8
     container_name: gitea-db
-    restart: unless-stopped
+    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=gitea
