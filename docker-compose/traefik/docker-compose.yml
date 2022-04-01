@@ -10,10 +10,21 @@ services:
     container_name: traefik
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
       # (Optional) Expose Dashboard
-      - "8080:8080" # Don't do this in production!
+      - 8080:8080 # Don't do this in production!
     volumes:
       - /etc/traefik:/etc/traefik
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.traefik.rule=Host(`yourdomain.com`)
+      - traefik.http.routers.traefik.entrypoints=https
+      - traefik.http.routers.traefik.tls=true
+      - traefik.http.routers.traefik.tls.certresolver=staging
+      # Note: when used in docker-compose.yml all dollar signs in the hash need to be doubled for escaping.
+      # To create user:password pair, it's possible to use this command:
+      # echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
+      - traefik.http.routers.traefik.middlewares=traefik-auth
+      - traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$2y$$05$$LqNHM1ABvSFo96TBbNscmePYN3dL9WqbN58.QRByE8SJ8.S.gAge6

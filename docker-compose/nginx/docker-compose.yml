@@ -1,4 +1,4 @@
-version: "3"
+version: '3'
 
 networks:
   default:
@@ -13,7 +13,8 @@ services:
     volumes:
       - .:/usr/share/nginx/html
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.wwww.rule=Host(`your-domain.com`)'
-      - 'traefik.http.routers.wwww.entrypoints=websecure'
-      - 'traefik.http.routers.wwww.tls=true'
+      - traefik.enable=true
+      - traefik.http.routers.wwww.rule=Host(`yourdomain.com`)
+      - traefik.http.routers.wwww.entrypoints=https
+      - traefik.http.routers.wwww.tls=true
+      - traefik.http.routers.wwww.tls.certresolver=staging
