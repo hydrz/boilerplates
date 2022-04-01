@@ -2,7 +2,8 @@ version: '3'
 
 networks:
   default:
-    external: true
+    external:
+      name: main
 
 services:
   whoami:
