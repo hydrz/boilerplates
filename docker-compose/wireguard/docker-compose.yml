@@ -1,0 +1,20 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: main
+
+services:
+  wireguard:
+    image: linuxserver/wireguard
+    container_name: dockovpn
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    ports:
+      - 51820:51820/udp
+    volumes:
+      - /lib/modules:/lib/modules
+      - ./config/wg0.conf:/config/wg0.conf:ro

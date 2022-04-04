@@ -9,6 +9,8 @@ services:
     image: traefik:v2.6
     container_name: traefik
     restart: always
+    environment:
+      - TZ=Asia/Shanghai
     ports:
       - "22:22"
       - "80:80"
@@ -19,13 +21,14 @@ services:
       - ./config:/etc/traefik
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`yourdomain.com`)
-      - traefik.http.routers.traefik.entrypoints=https
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.tls.certresolver=staging
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.yourdomain.com`)"
+      - "traefik.http.routers.traefik.entrypoints=https"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=staging"
+      - "traefik.http.routers.traefik.service=api@internal"
       # Note: when used in docker-compose.yml all dollar signs in the hash need to be doubled for escaping.
       # To create user:password pair, it's possible to use this command:
       # echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
-      - traefik.http.routers.traefik.middlewares=traefik-auth
-      - traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$2y$$05$$LqNHM1ABvSFo96TBbNscmePYN3dL9WqbN58.QRByE8SJ8.S.gAge6
+      - "traefik.http.routers.traefik.middlewares=traefik-auth"
+      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$2y$$05$$LqNHM1ABvSFo96TBbNscmePYN3dL9WqbN58.QRByE8SJ8.S.gAge6"
