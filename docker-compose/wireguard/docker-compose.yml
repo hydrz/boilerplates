@@ -2,19 +2,46 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: main
+    name: main # Define the default network
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.101.0.0/16
+          gateway: 10.101.0.1
 
 services:
   wireguard:
     image: linuxserver/wireguard
-    container_name: dockovpn
+    container_name: wireguard
     restart: always
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+      # External IP or domain name for docker host. Used in server mode. 
+      # If set to auto, the container will try to determine and set the external IP automatically
+      - SERVERURL=auto
+      # External port for docker host. Used in server mode.
+      - SERVERPORT=51820
+      # Number of peers to create confs for. Required for server mode. 
+      # Can also be a list of names: myPC,myPhone,myTablet (alphanumeric only)
+      - PEERS=openwrt
+      # DNS server set in peer/client configs (can be set as 8.8.8.8). Used in server mode. 
+      # Defaults to auto, which uses wireguard docker host's DNS via included CoreDNS forward.
+      - PEERDNS=auto
+      # Internal subnet for the wireguard and server and peers (only change if it clashes). Used in server mode.
+      - INTERNAL_SUBNET=10.102.0.0
+      # The IPs/Ranges that the peers will be able to reach using the VPN connection. 
+      # If not specified the default value is: '0.0.0.0/0, ::0/0' This will cause ALL traffic to route through the VPN, if you want split tunneling, 
+      # set this to only the IPs you would like to use the tunnel AND the ip of the server's WG ip, such as 10.13.13.1.
+      - ALLOWEDIPS=10.100.0.0/16, 10.101.0.0/16, 10.102.0.0/16
     ports:
       - 51820:51820/udp
     volumes:
+      - ./config:/config
       - /lib/modules:/lib/modules
-      - ./config/wg0.conf:/config/wg0.conf:ro
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1

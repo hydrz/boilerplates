@@ -3,7 +3,7 @@ version: "3"
 networks:
   default:
     external:
-      name: main
+      name: main # Define by wireguard
 
 services:
   gitea:
@@ -23,7 +23,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`yourdomain.com`)"
+      - "traefik.http.routers.gitea.rule=Host(`domain.com`)"
       - "traefik.http.routers.gitea.entrypoints=https"
       - "traefik.http.routers.gitea.tls=true"
       - "traefik.http.routers.gitea.tls.certresolver=staging"

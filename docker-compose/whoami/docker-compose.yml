@@ -3,7 +3,7 @@ version: '3'
 networks:
   default:
     external:
-      name: main
+      name: main # Define by wireguard
 
 services:
   whoami:
@@ -12,7 +12,7 @@ services:
     restart: always
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`yourdomain.com`)"
+      - "traefik.http.routers.whoami.rule=Host(`domain.com`)"
       - "traefik.http.routers.whoami.entrypoints=https"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=staging"
