@@ -2,12 +2,8 @@ version: '3'
 
 networks:
   default:
-    name: main # Define by wireguard
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.238.0/24
-          gateway: 172.16.238.1
+    external:
+      name: main # Define by wireguard
 
 services:
   traefik:

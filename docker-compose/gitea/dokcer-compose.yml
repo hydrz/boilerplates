@@ -13,27 +13,29 @@ services:
       - USER_UID=1000
       - USER_GID=1000
       - DB_TYPE=mysql
-      - DB_HOST=db:3306
+      - DB_HOST=gitea-db:3306
       - DB_NAME=gitea
       - DB_USER=root
     restart: always
     volumes:
-      - ./gitea:/data
+      - ./data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`domain.com`)"
+      - "traefik.http.routers.gitea.rule=Host(`git.domain.com`)"
       - "traefik.http.routers.gitea.entrypoints=https"
+      - "traefik.http.routers.gitea.service=gitea-service"
+      - "traefik.http.services.gitea-service.loadbalancer.server.port=3000"
       - "traefik.http.routers.gitea.tls=true"
       - "traefik.http.routers.gitea.tls.certresolver=staging"
-      - "traefik.tcp.routers.giteassh.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.giteassh.tls=true"
-      - "traefik.tcp.routers.giteassh.tls.certresolver=staging"
-      - "traefik.tcp.routers.giteassh.entrypoints=ssh"
-      - "traefik.tcp.routers.giteassh.service=giteassh"
-      - "traefik.tcp.services.giteassh.loadbalancer.server.port=22"
-  db:
+      - "traefik.tcp.routers.gitea-ssh.rule=HostSNI(`git.domain.com`)"
+      - "traefik.tcp.routers.gitea-ssh.entrypoints=ssh"
+      - "traefik.tcp.routers.gitea-ssh.tls=true"
+      - "traefik.tcp.routers.gitea-ssh.tls.certresolver=staging"
+      - "traefik.tcp.routers.gitea-ssh.service=gitea-ssh-service"
+      - "traefik.tcp.services.gitea-ssh-service.loadbalancer.server.port=22"
+  gitea-db:
     image: mysql:8
     container_name: gitea-db
     restart: always

@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+  default:
+    external:
+      name: main # Define by wireguard
+
+services:
+  wireguard-client:
+    image: linuxserver/wireguard
+    container_name: wireguard-client
+    restart: always
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./config/wg0.conf:/config/wg0.conf:ro
+      - /lib/modules:/lib/modules
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
