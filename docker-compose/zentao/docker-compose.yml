@@ -3,7 +3,7 @@ version: '3'
 networks:
   default:
     external:
-      name: main # Define by wireguard
+      name: br0
 
 services:
   zentao:
@@ -22,7 +22,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.zentao.rule=Host(`zentao.domain.com`)"
+      - "traefik.http.routers.zentao.rule=Host(`zentao.YOURDOMAIN`)"
       - "traefik.http.routers.zentao.entrypoints=https"
       - "traefik.http.routers.zentao.tls=true"
       - "traefik.http.routers.zentao.tls.certresolver=staging"

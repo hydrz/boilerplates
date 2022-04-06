@@ -3,7 +3,7 @@ version: "3"
 networks:
   default:
     external:
-      name: main # Define by wireguard
+      name: br0
 
 services:
   gitea:
@@ -23,7 +23,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`git.domain.com`)"
+      - "traefik.http.routers.gitea.rule=Host(`git.YOURDOMAIN`)"
       - "traefik.http.routers.gitea.entrypoints=https"
       - "traefik.http.routers.gitea.service=gitea-service"
       - "traefik.http.services.gitea-service.loadbalancer.server.port=3000"

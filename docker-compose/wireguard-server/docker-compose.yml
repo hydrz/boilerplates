@@ -2,17 +2,13 @@ version: '3'
 
 networks:
   default:
-    name: main # Define the default network
-    ipam:
-      driver: default
-      config:
-        - subnet: 10.101.0.0/16
-          gateway: 10.101.0.1
+    external:
+      name: br0
 
 services:
-  wireguard:
+  wireguard-server:
     image: linuxserver/wireguard
-    container_name: wireguard
+    container_name: wireguard-server
     restart: always
     cap_add:
       - NET_ADMIN
