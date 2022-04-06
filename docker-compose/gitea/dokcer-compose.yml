@@ -29,10 +29,8 @@ services:
       - "traefik.http.services.gitea-service.loadbalancer.server.port=3000"
       - "traefik.http.routers.gitea.tls=true"
       - "traefik.http.routers.gitea.tls.certresolver=staging"
-      - "traefik.tcp.routers.gitea-ssh.rule=HostSNI(`git.domain.com`)"
+      - "traefik.tcp.routers.gitea-ssh.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.gitea-ssh.entrypoints=ssh"
-      - "traefik.tcp.routers.gitea-ssh.tls=true"
-      - "traefik.tcp.routers.gitea-ssh.tls.certresolver=staging"
       - "traefik.tcp.routers.gitea-ssh.service=gitea-ssh-service"
       - "traefik.tcp.services.gitea-ssh-service.loadbalancer.server.port=22"
   gitea-db:
