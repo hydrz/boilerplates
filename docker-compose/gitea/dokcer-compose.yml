@@ -2,13 +2,13 @@ version: "3"
 
 networks:
   default:
-    external:
-      name: br0
+    name: br0
 
 services:
   gitea:
     image: gitea/gitea:1.16.5
     container_name: gitea
+    restart: always
     environment:
       - USER_UID=1000
       - USER_GID=1000
@@ -16,14 +16,13 @@ services:
       - DB_HOST=gitea-db:3306
       - DB_NAME=gitea
       - DB_USER=root
-    restart: always
     volumes:
       - ./data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gitea.rule=Host(`git.YOURDOMAIN`)"
+      - "traefik.http.routers.gitea.rule=Host(`git.${DOMAIN}`)"
       - "traefik.http.routers.gitea.entrypoints=https"
       - "traefik.http.routers.gitea.service=gitea-service"
       - "traefik.http.services.gitea-service.loadbalancer.server.port=3000"

@@ -1,0 +1,15 @@
+version: '3'
+
+networks:
+  default:
+    name: br0
+
+services:
+  dnsmasq:
+    image: strm/dnsmasq
+    container_name: dnsmasq
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "5300:53/udp"

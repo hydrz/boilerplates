@@ -2,8 +2,7 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    name: br0
 
 services:
   ghost:
@@ -25,7 +24,7 @@ services:
       - ./content:/var/lib/ghost/content
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ghost.rule=Host(`ghost.YOURDOMAIN`)"
+      - "traefik.http.routers.ghost.rule=Host(`ghost.${DOMAIN}`)"
       - "traefik.http.routers.ghost.entrypoints=https"
       - "traefik.http.routers.ghost.tls=true"
       - "traefik.http.routers.ghost.tls.certresolver=staging"

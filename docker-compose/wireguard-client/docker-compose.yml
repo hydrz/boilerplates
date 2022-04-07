@@ -1,15 +1,11 @@
 version: '3'
 
-networks:
-  default:
-    external:
-      name: br0
-
 services:
   wireguard-client:
     image: linuxserver/wireguard
     container_name: wireguard-client
     restart: always
+    network_mode: host
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -20,5 +16,6 @@ services:
     volumes:
       - ./config/wg0.conf:/config/wg0.conf:ro
       - /lib/modules:/lib/modules
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
+    # when use host network cannot set sysctl
+    # sysctls:
+    #   - net.ipv4.conf.all.src_valid_mark=1

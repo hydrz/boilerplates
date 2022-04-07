@@ -2,8 +2,7 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    name: br0
 
 services:
   www:
@@ -14,7 +13,7 @@ services:
       - .:/usr/share/nginx/html
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.www.rule=Host(`YOURDOMAIN`)"
+      - "traefik.http.routers.www.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.www.entrypoints=https"
       - "traefik.http.routers.www.tls=true"
       - "traefik.http.routers.www.tls.certresolver=staging"

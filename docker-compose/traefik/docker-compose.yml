@@ -2,8 +2,7 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    name: br0
 
 services:
   traefik:
@@ -12,6 +11,37 @@ services:
     restart: always
     environment:
       - TZ=Asia/Shanghai
+    command:
+      # https://doc.traefik.io/traefik/reference/static-configuration/cli/
+      # Global configuration
+      - "--global.checknewversion=false"
+      - "--global.sendanonymoususage=false"
+      # Entry Points configuration
+      - "--entrypoints.ssh.address=:22"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--entrypoints.http.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.http.http.redirections.entrypoint.to=https"
+      # (Optional) Log information
+      - "--log.level=INFO"
+      # (Optional) Accesslog
+      - "--accesslog=false"
+      # (Optional) Enable API and Dashboard
+      - "--api.dashboard=true"
+      - "--api.insecure=false" # Don't do this in production!
+      # Configure your CertificateResolver here...
+      - "--certificatesresolvers.staging.acme.email=${EMAIL}"
+      - "--certificatesresolvers.staging.acme.storage=/etc/traefik/acme-staging.json"
+      - "--certificatesresolvers.staging.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.staging.acme.httpchallenge.entrypoint=http"
+      - "--certificatesresolvers.production.acme.email=${EMAIL}"
+      - "--certificatesresolvers.production.acme.storage=/etc/traefik/acme-production.json"
+      - "--certificatesresolvers.production.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.production.acme.httpchallenge.entrypoint=http"
+      # Providers configuration backend
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.file.directory=/etc/traefik"
+      - "--providers.file.watch=true"
     ports:
       - "22:22"
       - "80:80"
@@ -23,7 +53,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.YOURDOMAIN`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN}`)"
       - "traefik.http.routers.traefik.entrypoints=https"
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=staging"

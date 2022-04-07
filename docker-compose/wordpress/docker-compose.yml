@@ -2,8 +2,7 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    name: br0
 
 services:
   wordpress:
@@ -19,7 +18,7 @@ services:
       - ./www:/var/www/html
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=Host(`wp.YOURDOMAIN`)"
+      - "traefik.http.routers.wordpress.rule=Host(`wp.${DOMAIN}`)"
       - "traefik.http.routers.wordpress.entrypoints=https"
       - "traefik.http.routers.wordpress.tls=true"
       - "traefik.http.routers.wordpress.tls.certresolver=staging"

@@ -1,15 +1,14 @@
+# note: if you want to use coredns, please disable system's systemd-resolved
+# systemctl disable systemd-resolved.service
+# systemctl stop systemd-resolved
+
 version: '3'
-
-networks:
-  default:
-    external:
-      name: br0
-
 services:
   wireguard-server:
     image: linuxserver/wireguard
     container_name: wireguard-server
     restart: always
+    network_mode: host # use host network to enable other docker container can access to peers
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -29,15 +28,17 @@ services:
       # Defaults to auto, which uses wireguard docker host's DNS via included CoreDNS forward.
       - PEERDNS=auto
       # Internal subnet for the wireguard and server and peers (only change if it clashes). Used in server mode.
-      - INTERNAL_SUBNET=10.102.0.0
+      - INTERNAL_SUBNET=10.101.0.0
       # The IPs/Ranges that the peers will be able to reach using the VPN connection. 
       # If not specified the default value is: '0.0.0.0/0, ::0/0' This will cause ALL traffic to route through the VPN, if you want split tunneling, 
       # set this to only the IPs you would like to use the tunnel AND the ip of the server's WG ip, such as 10.13.13.1.
-      - ALLOWEDIPS=10.100.0.0/16, 10.101.0.0/16, 10.102.0.0/16
-    ports:
-      - 51820:51820/udp
+      - ALLOWEDIPS=10.99.0.0/16, 10.100.0.0/16, 10.101.0.0/16
+    # ports:
+    #   - 53:53
+    #   - 51820:51820/udp
     volumes:
       - ./config:/config
       - /lib/modules:/lib/modules
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
+    # when use host network cannot set sysctl
+    # sysctls:
+    #   - net.ipv4.conf.all.src_valid_mark=1
