@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  coredns:
+    image: hydrz/coredns
+    container_name: coredns
+    restart: always
+    network_mode: host
+    volumes:
+      - './config:/app/config/coredns'
