@@ -19,7 +19,7 @@ services:
       SITE_NAME: URL Shortener
       DEFAULT_DOMAIN: s.${DOMAIN}
       ADMIN_EMAILS: admin@sraph.com
-      CUSTOM_DOMAIN_USE_HTTPS: false
+      CUSTOM_DOMAIN_USE_HTTPS: true
       JWT_SECRET: ${JWT_SECRET}
       MAIL_HOST: smtp.exmail.qq.com
       MAIL_PORT: 465
