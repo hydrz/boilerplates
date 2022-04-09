@@ -11,19 +11,27 @@ services:
     container_name: kutt
     restart: always
     environment:
-      DB_HOST: postgres
+      # connection
+      DB_HOST: kutt-db
       DB_NAME: kutt
       DB_USER: root
       DB_PASSWORD: root
-      REDIS_HOST: redis
+      REDIS_HOST: kutt-redis
+      # app
       SITE_NAME: URL Shortener
       DEFAULT_DOMAIN: s.${DOMAIN}
+      LINK_LENGTH: 6
+      DISALLOW_REGISTRATION: "true"
+      DISALLOW_ANONYMOUS_LINKS: "true"
+      USER_LIMIT_PER_DAY: 50
       ADMIN_EMAILS: ${EMAIL}
       CUSTOM_DOMAIN_USE_HTTPS: "true"
       JWT_SECRET: ${JWT_SECRET}
       MAIL_HOST: smtp.exmail.qq.com
       MAIL_PORT: 465
+      MAIL_SECURE: "true"
       MAIL_USER: ${EMAIL}
+      MAIL_FROM: ${EMAIL}
       MAIL_PASSWORD: ${EMAIL_PASSWORD}
     command:
       [
