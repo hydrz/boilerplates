@@ -19,7 +19,7 @@ services:
       SITE_NAME: URL Shortener
       DEFAULT_DOMAIN: s.${DOMAIN}
       ADMIN_EMAILS: ${EMAIL}
-      CUSTOM_DOMAIN_USE_HTTPS: true
+      CUSTOM_DOMAIN_USE_HTTPS: "true"
       JWT_SECRET: ${JWT_SECRET}
       MAIL_HOST: smtp.exmail.qq.com
       MAIL_PORT: 465
@@ -41,11 +41,15 @@ services:
       - "traefik.http.routers.kutt.tls.certresolver=staging"
       - "traefik.http.routers.kutt.service=kutt-service"
       - "traefik.http.services.kutt-service.loadbalancer.server.port=3000"
-  redis:
+  kutt-redis:
     image: redis:6.0-alpine
+    container_name: kutt-redis
+    restart: always
 
-  postgres:
+  kutt-db:
     image: postgres:12-alpine
+    container_name: kutt-db
+    restart: always
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
