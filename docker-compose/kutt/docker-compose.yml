@@ -17,7 +17,7 @@ services:
       DB_PASSWORD: root
       REDIS_HOST: redis
       SITE_NAME: URL Shortener
-      DEFAULT_DOMAIN: kutt.${DOMAIN}
+      DEFAULT_DOMAIN: s.${DOMAIN}
       ADMIN_EMAILS: admin@sraph.com
       CUSTOM_DOMAIN_USE_HTTPS: false
       JWT_SECRET: ${JWT_SECRET}
@@ -33,9 +33,14 @@ services:
         "npm",
         "start"
       ]
-    ports:
-      - "3000:3000"
-
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kutt.rule=Host(`s.${DOMAIN}`)"
+      - "traefik.http.routers.kutt.entrypoints=https"
+      - "traefik.http.routers.kutt.tls=true"
+      - "traefik.http.routers.kutt.tls.certresolver=staging"
+      - "traefik.http.routers.kutt.service=kutt-service"
+      - "traefik.http.services.kutt-service.loadbalancer.server.port=3000"
   redis:
     image: redis:6.0-alpine
 
