@@ -18,7 +18,7 @@ services:
       REDIS_HOST: redis
       SITE_NAME: URL Shortener
       DEFAULT_DOMAIN: s.${DOMAIN}
-      ADMIN_EMAILS: admin@sraph.com
+      ADMIN_EMAILS: ${EMAIL}
       CUSTOM_DOMAIN_USE_HTTPS: true
       JWT_SECRET: ${JWT_SECRET}
       MAIL_HOST: smtp.exmail.qq.com
