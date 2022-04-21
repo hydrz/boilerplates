@@ -2,8 +2,8 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    external: true
+    name: br0
 
 services:
   wordpress:

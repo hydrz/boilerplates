@@ -2,13 +2,13 @@ version: '3'
 
 networks:
   default:
-    external:
-      name: br0
+    external: true
+    name: br0
 
 services:
   etcd:
     image: docker.io/bitnami/etcd:3.4
-    container_name: redis
+    container_name: etcd
     restart: always
     environment:
       - ALLOW_NONE_AUTHENTICATION=yes
