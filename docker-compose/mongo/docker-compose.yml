@@ -7,11 +7,10 @@ networks:
 
 services:
   mongo:
-    image: mongo
+    image: bitnami/mongodb:5.0.7
     container_name: mongo
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGODB_ROOT_PASSWORD: root
     volumes:
-      - ./mongo:/data/db
+      - ./mongo:/bitnami/mongodb
