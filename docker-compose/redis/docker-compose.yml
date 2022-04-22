@@ -3,7 +3,7 @@ version: '3'
 networks:
   default:
     external: true
-    name: br0
+    name: ${DOKCER_BRIDGE}
 
 services:
   redis:
