@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   coredns:
@@ -6,8 +6,10 @@ services:
     container_name: coredns
     restart: always
     network_mode: host
+    expose:
+      - "53"
     cap_add:
       - NET_ADMIN
     volumes:
-      - './config:/app/config/coredns'
-      - '/tmp:/tmp'
+      - "./config:/app/config/coredns"
+      - "/tmp:/tmp"

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 networks:
   default:
@@ -10,6 +10,10 @@ services:
     image: traefik:v2.6
     container_name: traefik
     restart: always
+    expose:
+      - "22"
+      - "80"
+      - "443"
     environment:
       - TZ=Asia/Shanghai
     command:

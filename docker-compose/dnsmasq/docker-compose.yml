@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 networks:
   default:
@@ -10,6 +10,8 @@ services:
     image: strm/dnsmasq
     container_name: dnsmasq
     restart: always
+    expose:
+      - "53"
     cap_add:
       - NET_ADMIN
     ports:

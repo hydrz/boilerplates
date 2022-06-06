@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 networks:
   default:
@@ -10,6 +10,8 @@ services:
     image: nginx
     container_name: www
     restart: always
+    expose:
+      - "80"
     volumes:
       - .:/usr/share/nginx/html
     labels:

@@ -10,6 +10,8 @@ services:
     image: traefik/whoami
     container_name: whoami
     restart: always
+    expose:
+      - "80"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`${DOMAIN}`)"
