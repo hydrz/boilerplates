@@ -21,6 +21,6 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     # network_mode: host
-    # when use host network cannot set sysctl
-    # sysctls:
-    #   - net.ipv4.conf.all.src_valid_mark=1
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.ip_forward=1
