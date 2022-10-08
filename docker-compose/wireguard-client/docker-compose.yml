@@ -1,21 +1,26 @@
-version: '3'
+version: "3"
+
+networks:
+  default:
+    external: true
+    name: ${DOKCER_BRIDGE}
 
 services:
   wireguard-client:
     image: linuxserver/wireguard
     container_name: wireguard-client
     restart: always
-    network_mode: host
-    cap_add:
-      - NET_ADMIN
-      - SYS_MODULE
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Asia/Shanghai
     volumes:
-      - ./config/wg0.conf:/config/wg0.conf:ro
+      - ./config/wg0.conf:/config/wg0.conf
       - /lib/modules:/lib/modules
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    # network_mode: host
     # when use host network cannot set sysctl
     # sysctls:
     #   - net.ipv4.conf.all.src_valid_mark=1
