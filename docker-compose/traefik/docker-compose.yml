@@ -33,7 +33,7 @@ services:
       - "--accesslog=false"
       # (Optional) Enable API and Dashboard
       - "--api.dashboard=true"
-      - "--api.insecure=false" # Don't do this in production!
+      - "--api.insecure=true" # Don't do this in production!
       # Configure your CertificateResolver here...
       - "--certificatesresolvers.staging.acme.email=${EMAIL}"
       - "--certificatesresolvers.staging.acme.storage=/etc/traefik/acme-staging.json"
@@ -47,10 +47,10 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.file.directory=/etc/traefik"
       - "--providers.file.watch=true"
-    ports:
-      - "22:22"
-      - "80:80"
-      - "443:443"
+    # ports:
+      # - "22:22"
+      # - "80:80"
+      # - "443:443"
       # (Optional) Expose Dashboard
       # - "8080:8080" # Don't do this in production!
     volumes:
@@ -65,6 +65,6 @@ services:
       - "traefik.http.routers.traefik.service=api@internal"
       # Note: when used in docker-compose.yml all dollar signs in the hash need to be doubled for escaping.
       # To create user:password pair, it's possible to use this command:
-      # echo $(htpasswd -nB admin) | sed -e s/\\$/\\$\\$/g
+      # echo  "admin:$(openssl passwd -apr1)" | sed -e s/\\$/\\$\\$/g
       - "traefik.http.routers.traefik.middlewares=traefik-auth"
-      - "traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$2y$$05$$LqNHM1ABvSFo96TBbNscmePYN3dL9WqbN58.QRByE8SJ8.S.gAge6"
+      - 'traefik.http.middlewares.traefik-auth.basicauth.users=admin:$$apr1$$L0XIbm3F$$lei50rOs8KT8Bbs80FncD/'
