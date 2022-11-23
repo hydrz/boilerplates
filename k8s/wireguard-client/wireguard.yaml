@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wireguard-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard-client
+  template:
+    metadata:
+      labels:
+        app: wireguard-client
+    spec:
+      # only run on master node, because use unsafely sysctls
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      containers:
+        - name: wireguard-client
+          image: hydrz/wireguard
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          env:
+            - name: TZ
+              value: Asia/Shanghai
+          volumeMounts:
+            - name: config
+              mountPath: /config/wg0.conf
+              subPath: wg0.conf
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      volumes:
+        - name: config
+          configMap:
+            name: wireguard-client
+      securityContext:
+        sysctls:
+          - name: net.ipv4.conf.all.src_valid_mark
+            value: "1"
+          - name: net.ipv4.ip_forward
+            value: "1"
